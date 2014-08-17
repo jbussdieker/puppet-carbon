@@ -20,6 +20,7 @@ class carbon::aggregator(
   concat::fragment { 'aggregator':
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/aggregator.erb'),
+    order   => 30,
   }
 
 }
