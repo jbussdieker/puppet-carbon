@@ -24,6 +24,7 @@ class carbon::relay(
   concat::fragment { 'relay':
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/relay.erb'),
+    order   => 20,
   }
 
 }
