@@ -1,0 +1,75 @@
+[aggregator]
+LINE_RECEIVER_INTERFACE = 0.0.0.0
+LINE_RECEIVER_PORT = 2023
+
+PICKLE_RECEIVER_INTERFACE = 0.0.0.0
+PICKLE_RECEIVER_PORT = 2024
+
+# Filenames of the configuration files to use for this instance of aggregator.
+# Filenames are relative to CONF_DIR.
+# 
+# AGGREGATION_RULES = aggregation-rules.conf
+# REWRITE_RULES = rewrite-rules.conf
+
+# This is a list of carbon daemons we will send any relayed or
+# generated metrics to. The default provided would send to a single
+# carbon-cache instance on the default port. However if you
+# use multiple carbon-cache instances then it would look like this:
+#
+# DESTINATIONS = 127.0.0.1:2004:a, 127.0.0.1:2104:b
+# 
+# The format is comma-delimited IP:PORT:INSTANCE where the :INSTANCE part is
+# optional and refers to the "None" instance if omitted.
+#
+# Note that if the destinations are all carbon-caches then this should
+# exactly match the webapp's CARBONLINK_HOSTS setting in terms of
+# instances listed (order matters!).
+DESTINATIONS = 127.0.0.1:2004
+
+# If you want to add redundancy to your data by replicating every
+# datapoint to more than one machine, increase this.
+REPLICATION_FACTOR = 1
+
+# This is the maximum number of datapoints that can be queued up
+# for a single destination. Once this limit is hit, we will
+# stop accepting new data if USE_FLOW_CONTROL is True, otherwise
+# we will drop any subsequently received datapoints.
+MAX_QUEUE_SIZE = 10000
+
+# Set this to False to drop datapoints when any send queue (sending datapoints
+# to a downstream carbon daemon) hits MAX_QUEUE_SIZE. If this is True (the
+# default) then sockets over which metrics are received will temporarily stop accepting
+# data until the send queues fall below 80% MAX_QUEUE_SIZE.
+USE_FLOW_CONTROL = True
+
+# This defines the maximum "message size" between carbon daemons.
+# You shouldn't need to tune this unless you really know what you're doing.
+MAX_DATAPOINTS_PER_MESSAGE = 500
+
+# This defines how many datapoints the aggregator remembers for
+# each metric. Aggregation only happens for datapoints that fall in
+# the past MAX_AGGREGATION_INTERVALS * intervalSize seconds.
+MAX_AGGREGATION_INTERVALS = 5
+
+# By default (WRITE_BACK_FREQUENCY = 0), carbon-aggregator will write back
+# aggregated data points once every rule.frequency seconds, on a per-rule basis.
+# Set this (WRITE_BACK_FREQUENCY = N) to write back all aggregated data points
+# every N seconds, independent of rule frequency. This is useful, for example,
+# to be able to query partially aggregated metrics from carbon-cache without
+# having to first wait rule.frequency seconds.
+# WRITE_BACK_FREQUENCY = 0
+
+# Set this to True to enable whitelisting and blacklisting of metrics in
+# CONF_DIR/whitelist and CONF_DIR/blacklist. If the whitelist is missing or
+# empty, all metrics will pass through
+# USE_WHITELIST = False
+
+# By default, carbon itself will log statistics (such as a count,
+# metricsReceived) with the top level prefix of 'carbon' at an interval of 60
+# seconds. Set CARBON_METRIC_INTERVAL to 0 to disable instrumentation
+# CARBON_METRIC_PREFIX = carbon
+# CARBON_METRIC_INTERVAL = 60
+
+# In order to turn off logging of successful connections for the line
+# receiver, set this to False
+# LOG_LISTENER_CONN_SUCCESS = True
