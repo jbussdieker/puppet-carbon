@@ -16,4 +16,9 @@ class carbon::aggregator(
   $carbon_metric_interval = 60,
   $log_listener_conn_success = true,
 ) {
+
+  concat::fragment { 'aggregator':
+    target => "${prefix}/conf/carbon.conf",
+  }
+
 }
