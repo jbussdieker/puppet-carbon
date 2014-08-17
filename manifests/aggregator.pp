@@ -12,7 +12,7 @@ class carbon::aggregator(
   $max_aggregation_intervals = 5,
   $write_back_frequency = 0,
   $use_whitelist = false,
-  $carbon_metric_prefix = 'carbon'
+  $carbon_metric_prefix = 'carbon',
   $carbon_metric_interval = 60,
   $log_listener_conn_success = true,
 ) {
