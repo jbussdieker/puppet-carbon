@@ -20,4 +20,10 @@ class carbon::relay(
   $min_reset_ratio = 0.9,
   $min_reset_interval = 121
 ) {
+
+  concat::fragment { 'relay':
+    target  => "${prefix}/conf/carbon.conf",
+    content => template('carbon/relay.erb'),
+  }
+
 }
