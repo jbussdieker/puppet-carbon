@@ -19,4 +19,7 @@ class carbon(
     require => Vcsrepo[$path],
   }
 
+  concat { "${prefix}/conf/carbon.conf":
+  }
+
 }
