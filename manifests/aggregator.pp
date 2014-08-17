@@ -1,4 +1,5 @@
 class carbon::aggregator(
+  $prefix = '/opt/graphite',
   $line_receiver_interface = '0.0.0.0',
   $line_receiver_port = 2023,
   $pickle_receiver_interface = '0.0.0.0',
