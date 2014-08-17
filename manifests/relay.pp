@@ -12,7 +12,7 @@ class carbon::relay(
   $time_to_defer_sending = 0.0001,
   $use_flow_control = true,
   $use_whitelist = false,
-  $carbon_metric_prefix = 'carbon'
+  $carbon_metric_prefix = 'carbon',
   $carbon_metric_interval = 60,
   $log_listener_conn_success = true,
   $use_ratio_reset = false,
