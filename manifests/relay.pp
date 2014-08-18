@@ -26,6 +26,7 @@ class carbon::relay(
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/relay.erb'),
     order   => 20,
+    notify  => Service['carbon-relay'],
   }
 
   file { '/etc/init/carbon-relay.conf':
@@ -34,10 +35,12 @@ class carbon::relay(
     owner   => 'root',
     group   => 'root',
     content => template('carbon/relay.init.erb'),
+    notify  => Service['carbon-relay'],
   }
 
   service { 'carbon-relay':
-    ensure => running,
+    ensure  => running,
+    require => File['/etc/init/carbon-relay.conf'],
   }
 
 }
