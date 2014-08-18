@@ -15,32 +15,16 @@ class carbon(
   },
 ) {
 
-  vcsrepo { $path:
-    ensure   => present,
-    revision => $revision,
+  class { 'carbon::install':
+    prefix   => $prefix,
     source   => $source,
-    provider => git,
+    path     => $path,
+    revision => $revision,
   }
 
-  exec { 'install_carbon':
-    cwd     => $path,
-    command => "/usr/bin/python setup.py install --prefix ${prefix}",
-    creates => "${prefix}/bin/carbon-cache.py",
-    require => Vcsrepo[$path],
+  class { 'carbon::config':
+    prefix  => $prefix,
+    require => Class['carbon::install'],
   }
-
-  concat { "${prefix}/conf/carbon.conf":
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
-  }
-
-  concat { "${prefix}/conf/storage-schemas.conf":
-    owner => 'root',
-    group => 'root',
-    mode  => '0644',
-  }
-
-  create_resources('carbon::schema', $schemas)
 
 }

@@ -31,6 +31,7 @@ class carbon::aggregator(
     group   => 'root',
     content => template('carbon/aggregator.init.erb'),
     notify  => Service['carbon-aggregator'],
+    require => Class['carbon::config'],
   }
 
   service { 'carbon-aggregator':
