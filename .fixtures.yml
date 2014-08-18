@@ -1,0 +1,3 @@
+fixtures:
+  symlinks:
+    carbon: "#{source_dir}"
