@@ -1,0 +1,8 @@
+# carbon-relay - Manage the carbon relay agent
+description "Manage the carbon relay agent"
+
+start on (filesystem and started rsyslog)
+console output
+task
+
+exec cloud-init-cfg all config

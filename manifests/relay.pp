@@ -28,4 +28,16 @@ class carbon::relay(
     order   => 20,
   }
 
+  file { '/etc/init/carbon-relay.conf':
+    ensure  => present,
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    content => template('carbon/relay.init.erb'),
+  }
+
+  service { 'carbon-relay':
+    ensure => running,
+  }
+
 }
