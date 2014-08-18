@@ -24,4 +24,18 @@ class carbon::aggregator(
     order   => 30,
   }
 
+  file { '/etc/init/carbon-aggregator.conf':
+    ensure  => present,
+    mode    => '0644',
+    owner   => 'root',
+    group   => 'root',
+    content => template('carbon/aggregator.init.erb'),
+    notify  => Service['carbon-aggregator'],
+  }
+
+  service { 'carbon-aggregator':
+    ensure  => running,
+    require => File['/etc/init/carbon-aggregator.conf'],
+  }
+
 }
