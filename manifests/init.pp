@@ -3,6 +3,16 @@ class carbon(
   $source = 'https://github.com/graphite-project/carbon.git',
   $path = '/usr/local/src/carbon',
   $revision = 'master',
+  $schemas = {
+    'carbon' => {
+      pattern    => '^carbon\.',
+      retentions => '60:90d',
+    },
+    'default_1min_for_1day' => {
+      pattern    => '.*',
+      retentions => '60s:1d',
+    },
+  },
 ) {
 
   vcsrepo { $path:
@@ -21,5 +31,10 @@ class carbon(
 
   concat { "${prefix}/conf/carbon.conf":
   }
+
+  concat { "${prefix}/conf/storage-schemas.conf":
+  }
+
+  create_resources('carbon::schema', $schemas)
 
 }
