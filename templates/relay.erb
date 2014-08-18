@@ -1,8 +1,8 @@
 [relay]
-LINE_RECEIVER_INTERFACE = 0.0.0.0
-LINE_RECEIVER_PORT = 2013
-PICKLE_RECEIVER_INTERFACE = 0.0.0.0
-PICKLE_RECEIVER_PORT = 2014
+LINE_RECEIVER_INTERFACE = <%= @line_receiver_interface %>
+LINE_RECEIVER_PORT = <%= @line_receiver_port %>
+PICKLE_RECEIVER_INTERFACE = <%= @pickle_receiver_interface %>
+PICKLE_RECEIVER_PORT = <%= @pickle_receiver_port %>
 
 # Carbon-relay has several options for metric routing controlled by RELAY_METHOD
 #
@@ -18,11 +18,11 @@ PICKLE_RECEIVER_PORT = 2014
 # instance.
 # Enable this for carbon-relays that send to a group of carbon-aggregators
 #RELAY_METHOD = aggregated-consistent-hashing
-RELAY_METHOD = rules
+RELAY_METHOD = <%= @relay_method %>
 
 # If you use consistent-hashing you can add redundancy by replicating every
 # datapoint to more than one machine.
-REPLICATION_FACTOR = 1
+REPLICATION_FACTOR = <%= @replication_factor %>
 
 # This is a list of carbon daemons we will send any relayed or
 # generated metrics to. The default provided would send to a single
@@ -40,19 +40,19 @@ REPLICATION_FACTOR = 1
 #
 # If using RELAY_METHOD = rules, all destinations used in relay-rules.conf
 # must be defined in this list
-DESTINATIONS = 127.0.0.1:2004
+DESTINATIONS = <%= @destinations %>
 
 # This is the maximum number of datapoints that can be queued up
 # for a single destination. Once this limit is hit, we will
 # stop accepting new data if USE_FLOW_CONTROL is True, otherwise
 # we will drop any subsequently received datapoints.
-MAX_QUEUE_SIZE = 10000
+MAX_QUEUE_SIZE = <%= @max_queue_size %>
 
 # This defines the maximum "message size" between carbon daemons.  If
 # your queue is large, setting this to a lower number will cause the
 # relay to forward smaller discrete chunks of stats, which may prevent
 # overloading on the receiving side after a disconnect.
-MAX_DATAPOINTS_PER_MESSAGE = 500
+MAX_DATAPOINTS_PER_MESSAGE = <%= @max_datapoints_per_message %>
 
 # This is the percentage that the queue must be empty before it will accept
 # more messages.  For a larger site, if the queue is very large it makes sense
@@ -61,44 +61,44 @@ MAX_DATAPOINTS_PER_MESSAGE = 500
 # to allow stats to start flowing when you've cleared the queue to 95% since
 # you should have space to accommodate the next minute's worth of stats
 # even before the relay incrementally clears more of the queue
-QUEUE_LOW_WATERMARK_PCT = 0.8
+QUEUE_LOW_WATERMARK_PCT = <%= @queue_low_watermark_pct %>
 
 # To allow for batch efficiency from the pickle protocol and to benefit from
 # other batching advantages, all writes are deferred by putting them into a queue,
 # and then the queue is flushed and sent a small fraction of a second later.
-TIME_TO_DEFER_SENDING = 0.0001
+TIME_TO_DEFER_SENDING = <%= @time_to_defer_sending %>
 
 # Set this to False to drop datapoints when any send queue (sending datapoints
 # to a downstream carbon daemon) hits MAX_QUEUE_SIZE. If this is True (the
 # default) then sockets over which metrics are received will temporarily stop accepting
 # data until the send queues fall below QUEUE_LOW_WATERMARK_PCT * MAX_QUEUE_SIZE.
-USE_FLOW_CONTROL = True
+USE_FLOW_CONTROL = <%= @use_flow_control ? "True" : "False" %>
 
 # Set this to True to enable whitelisting and blacklisting of metrics in
 # CONF_DIR/whitelist and CONF_DIR/blacklist. If the whitelist is missing or
 # empty, all metrics will pass through
-# USE_WHITELIST = False
+USE_WHITELIST = <%= @use_whitelist ? "True" : "False" %>
 
 # By default, carbon itself will log statistics (such as a count,
 # metricsReceived) with the top level prefix of 'carbon' at an interval of 60
 # seconds. Set CARBON_METRIC_INTERVAL to 0 to disable instrumentation
-# CARBON_METRIC_PREFIX = carbon
-# CARBON_METRIC_INTERVAL = 60
+CARBON_METRIC_PREFIX = <%= @carbon_metric_prefix %>
+CARBON_METRIC_INTERVAL = <%= @carbon_metric_interval %>
 #
 # In order to turn off logging of successful connections for the line
 # receiver, set this to False
-# LOG_LISTENER_CONN_SUCCESS = True
+LOG_LISTENER_CONN_SUCCESS = <%= @log_listener_conn_success ? "True" : "False" %>
 
 # If you're connecting from the relay to a destination that's over the
 # internet or similarly iffy connection, a backlog can develop because
 # of internet weather conditions, e.g. acks getting lost or similar issues.
 # To deal with that, you can enable USE_RATIO_RESET which will let you
 # re-set the connection to an individual destination.  Defaults to being off.
-USE_RATIO_RESET=False
+USE_RATIO_RESET = <%= @use_ratio_reset ? "True" : "False" %>
 
 # When there is a small number of stats flowing, it's not desirable to
 # perform any actions based on percentages - it's just too "twitchy".
-MIN_RESET_STAT_FLOW=1000
+MIN_RESET_STAT_FLOW = <%= @min_reset_stat_flow %>
 
 # When the ratio of stats being sent in a reporting interval is far
 # enough from 1.0, we will disconnect the socket and reconnecto to
@@ -109,7 +109,7 @@ MIN_RESET_STAT_FLOW=1000
 # set this according to your tolerance, and look in the logs for
 # "resetConnectionForQualityReasons" to observe whether this is kicking
 # in when your sent queue is building up.
-MIN_RESET_RATIO=0.9
+MIN_RESET_RATIO = <%= @min_reset_ratio %>
 
 # The minimum time between resets.  When a connection is re-set, we
 # need to wait before another reset is performed.
@@ -117,4 +117,4 @@ MIN_RESET_RATIO=0.9
 # before stats for the new connection will be available.  Setting this
 # below (2*CARBON_METRIC_INTERVAL) + 1 second will result in a lot of
 # reset connections for no good reason.
-MIN_RESET_INTERVAL=121
+MIN_RESET_INTERVAL = <%= @min_reset_interval %>
