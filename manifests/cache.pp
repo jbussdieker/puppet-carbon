@@ -1,4 +1,5 @@
 define carbon::cache(
+  $name = $title,
   $prefix = '/opt/graphite',
   $local_data_dir = '/opt/graphite/storage/whisper/',
   $user = '',
@@ -42,7 +43,7 @@ define carbon::cache(
   $bind_patterns = '#'
 ) {
 
-  concat::fragment { 'cache':
+  concat::fragment { "cache_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/cache.erb'),
     order   => 10,
