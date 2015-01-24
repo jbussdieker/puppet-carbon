@@ -55,7 +55,6 @@ define carbon::cache(
     group   => 'root',
     content => template('carbon/cache.init.erb'),
     notify  => Service["carbon-cache-${name}"],
-    require => Class['carbon::config'],
   }
 
   service { "carbon-cache-${name}":
