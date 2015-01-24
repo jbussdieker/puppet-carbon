@@ -5,27 +5,12 @@ start on filesystem or runlevel [2345]
 stop on runlevel [!2345]
  
 env CARBON_CACHE=/opt/graphite/bin/carbon-cache.py
-env PIDFILE=/opt/graphite/storage/carbon-cache-<%= @name %>.pid
 
-expect daemon
 kill timeout 20
 
 umask 022
 respawn
  
-pre-start script
-    test -d /opt/graphite || { stop; exit 0; }
-end script
- 
-pre-stop script
-  $CARBON_CACHE --pidfile=$PIDFILE --instance <%= @name %> stop
-
-  # don't consider this service stopped until the PID gets removed
-  #
-  while [ -e $PIDFILE ]; do sleep 1 ; done
-  exit 0
-end script
-
 chdir /opt/graphite
  
-exec $CARBON_CACHE --pidfile=$PIDFILE --instance <%= @name %> start
+exec $CARBON_CACHE --instance <%= @name %> --debug start
