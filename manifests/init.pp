@@ -4,6 +4,7 @@ class carbon(
   $path = '/usr/local/src/carbon',
   $revision = 'master',
   $caches = [],
+  $relays = [],
   $schemas = {
     'carbon' => {
       pattern    => '^carbon\.',
@@ -26,6 +27,7 @@ class carbon(
   class { 'carbon::config':
     prefix  => $prefix,
     caches  => $caches,
+    relays  => $relays,
     schemas => $schemas,
     require => Class['carbon::install'],
   }

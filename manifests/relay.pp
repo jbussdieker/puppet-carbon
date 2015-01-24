@@ -1,4 +1,4 @@
-class carbon::relay(
+define carbon::relay(
   $prefix = '/opt/graphite',
   $line_receiver_interface = '0.0.0.0',
   $line_receiver_port = 2013,
@@ -22,26 +22,26 @@ class carbon::relay(
   $min_reset_interval = 121
 ) {
 
-  concat::fragment { 'relay':
+  concat::fragment { "relay_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/relay.erb'),
     order   => 20,
-    notify  => Service['carbon-relay'],
+    notify  => Service["carbon-relay-${name}"],
   }
 
-  file { '/etc/init/carbon-relay.conf':
+  file { "/etc/init/carbon-relay-${name}.conf":
     ensure  => present,
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
     content => template('carbon/relay.init.erb'),
-    notify  => Service['carbon-relay'],
+    notify  => Service["carbon-relay-${name}"],
     require => Class['carbon::config'],
   }
 
-  service { 'carbon-relay':
+  service { "carbon-relay-${name}":
     ensure  => running,
-    require => File['/etc/init/carbon-relay.conf'],
+    require => File["/etc/init/carbon-relay-${name}.conf"],
   }
 
 }
