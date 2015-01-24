@@ -46,6 +46,7 @@ define carbon::cache(
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/cache.erb'),
     order   => 10,
+    notify  => Service["carbon-cache-${name}"],
   }
 
   file { "/etc/init/carbon-cache-${name}.conf":
