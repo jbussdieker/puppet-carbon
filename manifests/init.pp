@@ -24,6 +24,7 @@ class carbon(
 
   class { 'carbon::config':
     prefix  => $prefix,
+    schemas => $schemas,
     require => Class['carbon::install'],
   }
 

@@ -1,5 +1,6 @@
 class carbon::config(
   $prefix = '/opt/graphite',
+  $schemas = [],
 ) {
 
   concat { "${prefix}/conf/carbon.conf":
