@@ -9,6 +9,12 @@ class carbon::config(
     mode    => '0644',
   }
 
+  concat::fragment { 'header':
+    target  => "${prefix}/conf/carbon.conf",
+    content => "### PUPPET MANAGED ###",
+    order   => 1,
+  }
+
   concat { "${prefix}/conf/storage-schemas.conf":
     owner   => 'root',
     group   => 'root',
