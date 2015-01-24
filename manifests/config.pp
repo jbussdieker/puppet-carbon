@@ -13,7 +13,7 @@ class carbon::config(
 
   concat::fragment { 'header':
     target  => "${prefix}/conf/carbon.conf",
-    content => "### PUPPET MANAGED ###",
+    content => "### PUPPET MANAGED ###\n",
     order   => 1,
   }
 
