@@ -40,7 +40,7 @@ REPLICATION_FACTOR = <%= @replication_factor %>
 #
 # If using RELAY_METHOD = rules, all destinations used in relay-rules.conf
 # must be defined in this list
-DESTINATIONS = <%= @destinations %>
+DESTINATIONS = <%= @destinations.kind_of?(Array) ? @destinations.join(", ") : @destinations %>
 
 # This is the maximum number of datapoints that can be queued up
 # for a single destination. Once this limit is hit, we will
