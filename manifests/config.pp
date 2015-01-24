@@ -1,5 +1,6 @@
 class carbon::config(
   $prefix = '/opt/graphite',
+  $caches = [],
   $schemas = [],
 ) {
 
@@ -22,5 +23,6 @@ class carbon::config(
   }
 
   create_resources('carbon::schema', $schemas)
+  create_resources('carbon::cache', $caches)
 
 }

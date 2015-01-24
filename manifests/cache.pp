@@ -1,4 +1,4 @@
-class carbon::cache(
+define carbon::cache(
   $prefix = '/opt/graphite',
   $local_data_dir = '/opt/graphite/storage/whisper/',
   $user = '',

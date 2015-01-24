@@ -3,6 +3,7 @@ class carbon(
   $source = 'https://github.com/graphite-project/carbon.git',
   $path = '/usr/local/src/carbon',
   $revision = 'master',
+  $caches = [],
   $schemas = {
     'carbon' => {
       pattern    => '^carbon\.',
@@ -24,6 +25,7 @@ class carbon(
 
   class { 'carbon::config':
     prefix  => $prefix,
+    caches  => $caches,
     schemas => $schemas,
     require => Class['carbon::install'],
   }
