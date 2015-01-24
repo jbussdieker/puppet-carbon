@@ -36,7 +36,7 @@ define carbon::relay(
     group   => 'root',
     content => template('carbon/relay.init.erb'),
     notify  => Service["carbon-relay-${name}"],
-    require => Class['carbon::config'],
+    require => File["${prefix}/conf/carbon.conf"],
   }
 
   service { "carbon-relay-${name}":
