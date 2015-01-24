@@ -48,19 +48,19 @@ define carbon::cache(
     order   => 10,
   }
 
-  file { '/etc/init/carbon-cache.conf':
+  file { "/etc/init/carbon-cache-${name}.conf":
     ensure  => present,
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
     content => template('carbon/cache.init.erb'),
-    notify  => Service['carbon-cache'],
+    notify  => Service["carbon-cache-${name}"],
     require => Class['carbon::config'],
   }
 
-  service { 'carbon-cache':
+  service { "carbon-cache-${name}":
     ensure  => running,
-    require => File['/etc/init/carbon-cache.conf'],
+    require => File["/etc/init/carbon-cache-${name}.conf"],
   }
 
 }
