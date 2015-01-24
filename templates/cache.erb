@@ -71,10 +71,10 @@ LINE_RECEIVER_PORT = <%= @line_receiver_port %>
 # another (rarely used) port for every carbon instance is not fun.
 ENABLE_UDP_LISTENER = False
 UDP_RECEIVER_INTERFACE = 0.0.0.0
-UDP_RECEIVER_PORT = 2003
+UDP_RECEIVER_PORT = <%= @udp_receiver_port %>
 
 PICKLE_RECEIVER_INTERFACE = 0.0.0.0
-PICKLE_RECEIVER_PORT = 2004
+PICKLE_RECEIVER_PORT = <%= @pickle_receiver_port %>
 
 # Per security concerns outlined in Bug #817247 the pickle receiver
 # will use a more secure and slightly less efficient unpickler.
@@ -82,7 +82,7 @@ PICKLE_RECEIVER_PORT = 2004
 USE_INSECURE_UNPICKLER = False
 
 CACHE_QUERY_INTERFACE = 0.0.0.0
-CACHE_QUERY_PORT = 7002
+CACHE_QUERY_PORT = <%= @cache_query_port %>
 
 # Set this to False to drop datapoints received after the cache
 # reaches MAX_CACHE_SIZE. If this is True (the default) then sockets
