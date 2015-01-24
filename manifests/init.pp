@@ -3,8 +3,8 @@ class carbon(
   $source = 'https://github.com/graphite-project/carbon.git',
   $path = '/usr/local/src/carbon',
   $revision = 'master',
-  $caches = [],
-  $relays = [],
+  $caches = {},
+  $relays = {},
   $schemas = {
     'carbon' => {
       pattern    => '^carbon\.',
