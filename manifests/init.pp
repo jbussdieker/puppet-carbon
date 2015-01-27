@@ -9,10 +9,12 @@ class carbon(
     'carbon' => {
       pattern    => '^carbon\.',
       retentions => '60:90d',
+      order      => 1,
     },
     'default_1min_for_1day' => {
       pattern    => '.*',
       retentions => '60s:1d',
+      order      => 99,
     },
   },
 ) {
