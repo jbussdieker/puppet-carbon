@@ -1,3 +1,27 @@
+# == Class: carbon
+#
+# Main class to install and configure carbon from package (default) or from source.
+#
+# === Examples
+#
+# Install default operating system Carbon.
+#
+#  class { 'carbon': }
+#
+# Install specific version of Carbon
+#
+#  class { 'carbon': }
+#    revision => '0.9.11',
+#  }
+#
+# === Authors
+#
+# Joshua B. Bussdieker <jbussdieker@gmail.com>
+#
+# === Copyright
+#
+# Copyright 2015 Joshua B. Bussdieker, unless otherwise noted.
+#
 class carbon(
   $prefix = '/opt/graphite',
   $source = 'https://github.com/graphite-project/carbon.git',
