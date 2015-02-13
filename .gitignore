@@ -1,5 +1,2 @@
-.librarian/
-.tmp/
-Gemfile.lock
 spec/fixtures/
 pkg/
