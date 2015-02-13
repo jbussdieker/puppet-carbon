@@ -1,4 +1,9 @@
-define carbon::schema($prefix = '/opt/graphite', $pattern, $retentions, $order = 10) {
+define carbon::schema(
+  $prefix = '/opt/graphite',
+  $order = 10,
+  $pattern,
+  $retentions
+) {
 
   concat::fragment { $title:
     target  => "${prefix}/conf/storage-schemas.conf",
