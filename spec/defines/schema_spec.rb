@@ -32,7 +32,7 @@ describe 'carbon::schema' do
 
         it { should contain_file(thing).with_mode('0640') }
         it param[:title] do
-          verify_contents(subject, thing, Array(param[:match]))
+          verify_contents(subject.call, thing, Array(param[:match]))
           Array(param[:notmatch]).each do |item|
             should contain_file(thing).without_content(item)
           end
