@@ -1,4 +1,4 @@
-class carbon::aggregator(
+define carbon::aggregator(
   $prefix = '/opt/graphite',
   $line_receiver_interface = '0.0.0.0',
   $line_receiver_port = 2023,
@@ -18,25 +18,25 @@ class carbon::aggregator(
   $log_listener_conn_success = true,
 ) {
 
-  concat::fragment { 'aggregator':
+  concat::fragment { "aggregator_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/aggregator.erb'),
     order   => 30,
   }
 
-  file { '/etc/init/carbon-aggregator.conf':
+  file { "/etc/init/carbon-aggregator-${name}.conf":
     ensure  => present,
     mode    => '0644',
     owner   => 'root',
     group   => 'root',
     content => template('carbon/aggregator.init.erb'),
-    notify  => Service['carbon-aggregator'],
+    notify  => Service["carbon-aggregator-${name}"],
     require => Class['carbon::config'],
   }
 
-  service { 'carbon-aggregator':
+  service { "carbon-aggregator-${name}":
     ensure  => running,
-    require => File['/etc/init/carbon-aggregator.conf'],
+    require => File["/etc/init/carbon-aggregator-${name}.conf"],
   }
 
 }
