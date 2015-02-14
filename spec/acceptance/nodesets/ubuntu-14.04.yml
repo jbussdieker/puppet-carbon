@@ -1,0 +1,11 @@
+HOSTS:
+  ubuntu-server-14042-x64:
+    roles:
+      - master
+    platform: ubuntu-14.04-amd64
+    box: ubuntu-server-14042-x64-vbox4210-nocm
+    box_url: http://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box
+    hypervisor: vagrant
+CONFIG:
+  log_level: debug
+  type: foss
