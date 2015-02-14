@@ -43,6 +43,10 @@ class carbon(
   },
 ) {
 
+  package { 'python-twisted':
+    ensure => present,
+  }
+
   class { 'carbon::install':
     prefix   => $prefix,
     source   => $source,
