@@ -25,6 +25,18 @@ describe 'carbon class' do
       it 'carbon-cache.py should work' do
         shell("/opt/graphite/bin/carbon-cache.py --help", :acceptable_exit_codes => 0)
       end
+
+      it 'carbon-relay.py should work' do
+        shell("/opt/graphite/bin/carbon-relay.py --help", :acceptable_exit_codes => 0)
+      end
+
+      it 'carbon-aggregator.py should work' do
+        shell("/opt/graphite/bin/carbon-aggregator.py --help", :acceptable_exit_codes => 0)
+      end
+
+      it 'carbon-client.py should work' do
+        shell("/opt/graphite/bin/carbon-client.py --help", :acceptable_exit_codes => 0)
+      end
     end
   end
 end
