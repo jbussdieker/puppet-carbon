@@ -1,4 +1,9 @@
+# == Class: carbon::cache
+#
+# Configures an instance of carbon-cache
+#
 define carbon::cache(
+  $default = false,
   $prefix = '/opt/graphite',
   $local_data_dir = '/opt/graphite/storage/whisper/',
   $user = '',
@@ -62,6 +67,7 @@ define carbon::cache(
 
   service { "carbon-cache-${name}":
     ensure  => running,
+    enable  => true,
     require => File["/etc/init/carbon-cache-${name}.conf"],
   }
 

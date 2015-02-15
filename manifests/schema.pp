@@ -1,8 +1,12 @@
+# == Class: carbon::schema
+#
+# Configures a carbon schema entry
+#
 define carbon::schema(
+  $pattern,
+  $retentions,
   $prefix = '/opt/graphite',
   $order = 10,
-  $pattern,
-  $retentions
 ) {
 
   concat::fragment { $title:

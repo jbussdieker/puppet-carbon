@@ -1,4 +1,9 @@
+# == Class: carbon::aggregator
+#
+# Configures an instance of carbon-aggregator
+#
 define carbon::aggregator(
+  $default = false,
   $prefix = '/opt/graphite',
   $line_receiver_interface = '0.0.0.0',
   $line_receiver_port = 2023,
@@ -31,11 +36,12 @@ define carbon::aggregator(
     group   => 'root',
     content => template('carbon/aggregator.init.erb'),
     notify  => Service["carbon-aggregator-${name}"],
-    require => Class['carbon::config'],
+    require => File["${prefix}/conf/carbon.conf"],
   }
 
   service { "carbon-aggregator-${name}":
     ensure  => running,
+    enable  => true,
     require => File["/etc/init/carbon-aggregator-${name}.conf"],
   }
 

@@ -4,7 +4,38 @@ describe 'carbon class' do
   let(:manifest) {
     <<-EOS
       class { 'carbon':
-        revision => 'master'
+        revision => 'master',
+        caches      => {
+          'a' => {
+            line_receiver_interface => '0.0.0.0',
+            line_receiver_port      => 2003,
+          }
+        },
+        relays      => {
+          'a' => {
+            relay_method            => 'consistent-hashing',
+            line_receiver_interface => '0.0.0.0',
+            line_receiver_port      => 2013,
+          }
+        },
+        aggregators => {
+          'a' => {
+            line_receiver_interface => '0.0.0.0',
+            line_receiver_port      => 2023,
+          }
+        },
+        schemas     => {
+          'carbon' => {
+            pattern    => '^carbon\.',
+            retentions => '60:90d',
+            order      => 1,
+          },
+          'default_1min_for_1day' => {
+            pattern    => '.*',
+            retentions => '60s:1d',
+            order      => 99,
+          },
+        },
       }
     EOS
   }

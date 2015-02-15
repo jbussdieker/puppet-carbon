@@ -1,6 +1,7 @@
 # == Class: carbon
 #
-# Main class to install and configure carbon from package (default) or from source.
+# Main class to install and configure carbon from package (default) or from 
+# source.
 #
 # === Examples
 #
@@ -29,6 +30,7 @@ class carbon(
   $revision = 'master',
   $caches = {},
   $relays = {},
+  $aggregators = {},
   $schemas = {
     'carbon' => {
       pattern    => '^carbon\.',
@@ -41,25 +43,57 @@ class carbon(
       order      => 99,
     },
   },
+  $aggregations = {},
 ) {
 
   package { 'python-twisted':
     ensure => present,
   }
 
-  class { 'carbon::install':
-    prefix   => $prefix,
-    source   => $source,
-    path     => $path,
+  vcsrepo { $path:
+    ensure   => present,
     revision => $revision,
+    source   => $source,
+    provider => git,
   }
 
-  class { 'carbon::config':
-    prefix  => $prefix,
-    caches  => $caches,
-    relays  => $relays,
-    schemas => $schemas,
-    require => Class['carbon::install'],
+  exec { 'install_carbon':
+    cwd     => $path,
+    command => "/usr/bin/python setup.py install --prefix ${prefix}",
+    creates => "${prefix}/bin/carbon-cache.py",
+    require => Vcsrepo[$path],
   }
+
+  concat { "${prefix}/conf/carbon.conf":
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => Exec['install_carbon'],
+  }
+
+  concat::fragment { 'header':
+    target  => "${prefix}/conf/carbon.conf",
+    content => "### PUPPET MANAGED ###\n",
+    order   => 1,
+  }
+
+  concat { "${prefix}/conf/storage-schemas.conf":
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+  }
+
+  concat { "${prefix}/conf/aggregation-rules.conf":
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+  }
+
+  create_resources('carbon::schema', $schemas)
+  create_resources('carbon::aggregation', $aggregations)
+
+  create_resources('carbon::cache', $caches)
+  create_resources('carbon::relay', $relays)
+  create_resources('carbon::aggregator', $aggregators)
 
 }

@@ -1,4 +1,4 @@
-[relay:<%= @name %>]
+[relay<%= ":#{@name}" unless @default %>]
 LINE_RECEIVER_INTERFACE = <%= @line_receiver_interface %>
 LINE_RECEIVER_PORT = <%= @line_receiver_port %>
 PICKLE_RECEIVER_INTERFACE = <%= @pickle_receiver_interface %>

@@ -1,4 +1,9 @@
+# == Class: carbon::relay
+#
+# Configures an instance of carbon-relay
+#
 define carbon::relay(
+  $default = false,
   $prefix = '/opt/graphite',
   $line_receiver_interface = '0.0.0.0',
   $line_receiver_port = 2013,
@@ -41,6 +46,7 @@ define carbon::relay(
 
   service { "carbon-relay-${name}":
     ensure  => running,
+    enable  => true,
     require => File["/etc/init/carbon-relay-${name}.conf"],
   }
 
