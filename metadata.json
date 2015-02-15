@@ -15,7 +15,7 @@
     },
     {
       "operatingsystem": "Debian",
-      "operatingsystemrelease": [ "7", "6" ]
+      "operatingsystemrelease": [ "7" ]
     }
   ],
   "dependencies": [
