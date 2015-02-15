@@ -5,7 +5,7 @@ describe 'carbon::relay_rule' do
   let(:params) { default_params }
   let(:default_params) do
     {
-      :default => true,
+      :is_default => true,
       :pattern => 'a',
       :destinations => 'b',
       :continue => false,
@@ -18,7 +18,7 @@ describe 'carbon::relay_rule' do
     [
       {
         :title => 'should set default',
-        :attr  => 'default',
+        :attr  => 'is_default',
         :value => 'true',
         :match => 'default = true',
       },
