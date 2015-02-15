@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'carbon::aggregation' do
+describe 'carbon::aggregation_rule' do
   let(:title) { 'default' }
   let(:params) { default_params }
   let(:default_params) do
@@ -20,25 +20,25 @@ describe 'carbon::aggregation' do
         :title => 'should set output_template',
         :attr  => 'output_template',
         :value => 'a',
-        :match => 'a',
+        :match => 'a (b) = c d',
       },
       {
         :title => 'should set frequency',
         :attr  => 'frequency',
         :value => 'b',
-        :match => 'b',
+        :match => 'a (b) = c d',
       },
       {
         :title => 'should set method',
         :attr  => 'method',
         :value => 'c',
-        :match => 'c',
+        :match => 'a (b) = c d',
       },
       {
         :title => 'should set input_pattern',
         :attr  => 'input_pattern',
         :value => 'd',
-        :match => 'd',
+        :match => 'a (b) = c d',
       },
     ].each do |param|
       context "when #{param[:attr]} is #{param[:value]}" do

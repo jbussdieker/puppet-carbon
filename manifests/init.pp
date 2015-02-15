@@ -43,7 +43,8 @@ class carbon(
       order      => 99,
     },
   },
-  $aggregations = {},
+  $aggregation_rules = {},
+  $relay_rules = {},
 ) {
 
   package { 'python-twisted':
@@ -64,17 +65,15 @@ class carbon(
     require => Vcsrepo[$path],
   }
 
-  concat { "${prefix}/conf/carbon.conf":
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
+  file { "${prefix}/conf":
+    ensure  => directory,
     require => Exec['install_carbon'],
   }
 
-  concat::fragment { 'header':
-    target  => "${prefix}/conf/carbon.conf",
-    content => "### PUPPET MANAGED ###\n",
-    order   => 1,
+  concat { "${prefix}/conf/carbon.conf":
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
   }
 
   concat { "${prefix}/conf/storage-schemas.conf":
@@ -90,8 +89,16 @@ class carbon(
     force => true,
   }
 
+  concat { "${prefix}/conf/relay-rules.conf":
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+    force => true,
+  }
+
   create_resources('carbon::schema', $schemas)
-  create_resources('carbon::aggregation', $aggregations)
+  create_resources('carbon::aggregation_rule', $aggregation_rules)
+  create_resources('carbon::relay_rule', $relay_rules)
 
   create_resources('carbon::cache', $caches)
   create_resources('carbon::relay', $relays)

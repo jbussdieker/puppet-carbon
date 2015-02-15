@@ -1,0 +1,11 @@
+[<%= @title %>]
+<% if @default -%>
+default = true
+<% end -%>
+<% if @pattern -%>
+pattern = <%= @pattern %>
+<% end -%>
+destinations = <%= @destinations %>
+<% if @continue -%>
+continue = true
+<% end -%>
