@@ -87,6 +87,7 @@ class carbon(
     owner => 'root',
     group => 'root',
     mode  => '0644',
+    force => true,
   }
 
   create_resources('carbon::schema', $schemas)
