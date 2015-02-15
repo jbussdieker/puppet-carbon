@@ -3,7 +3,7 @@
 # Configures an instance of carbon-cache
 #
 define carbon::cache(
-  $default = false,
+  $is_default = false,
   $prefix = '/opt/graphite',
   $local_data_dir = '/opt/graphite/storage/whisper/',
   $user = '',
