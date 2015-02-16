@@ -70,7 +70,9 @@ describe 'carbon::storage_aggregation' do
       it { should contain_concat__fragment(title) }
 
       it param[:title] do
-        verify_concat(subject.call, title, Array(param[:match]))
+        Array(param[:match]).each do |item|
+          fragment_content.should match(item)
+        end
 
         Array(param[:notmatch]).each do |item|
           fragment_content.should_not match(item)
