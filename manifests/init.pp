@@ -44,8 +44,38 @@ class carbon(
     },
   },
   $aggregation_rules = {},
-  $relay_rules = {},
-  $storage_aggregations = {},
+  $relay_rules = {
+    'default' => {
+      is_default   => true,
+      destinations => '127.0.0.1:2004:a, 127.0.0.1:2104:b',
+    },
+  },
+  $storage_aggregations = {
+    'min' => {
+      pattern            => '\.min$',
+      x_files_factor     => 0.1,
+      aggregation_method => 'sum',
+      order              => 1,
+    },
+    'max' => {
+      pattern            => '\.max$',
+      x_files_factor     => 0.1,
+      aggregation_method => 'max',
+      order              => 2,
+    },
+    'sum' => {
+      pattern            => '\.count$',
+      x_files_factor     => 0,
+      aggregation_method => 'sum',
+      order              => 3,
+    },
+    'default_average' => {
+      pattern            => '.*',
+      x_files_factor     => 0.5,
+      aggregation_method => 'average',
+      order              => 4,
+    },
+  },
 ) {
 
   package { 'python-twisted':
@@ -75,12 +105,14 @@ class carbon(
     owner => 'root',
     group => 'root',
     mode  => '0644',
+    force => true,
   }
 
   concat { "${prefix}/conf/storage-schemas.conf":
     owner => 'root',
     group => 'root',
     mode  => '0644',
+    force => true,
   }
 
   concat { "${prefix}/conf/storage-aggregation.conf":

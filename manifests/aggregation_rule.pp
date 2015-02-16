@@ -3,10 +3,10 @@
 # Configures a carbon aggregation rule entry
 #
 define carbon::aggregation_rule(
-  $output_template = '',
-  $frequency = '',
-  $method = '',
-  $input_pattern = '',
+  $output_template,
+  $frequency,
+  $method,
+  $input_pattern,
   $prefix = '/opt/graphite',
   $order = 10,
 ) {

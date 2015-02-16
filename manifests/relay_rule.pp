@@ -3,10 +3,10 @@
 # Configures a carbon relay rule entry
 #
 define carbon::relay_rule(
-  $pattern,
   $destinations,
-  $is_default = false,
-  $continue = false,
+  $pattern = undef,
+  $is_default = undef,
+  $continue = undef,
   $prefix = '/opt/graphite',
   $order = 10,
 ) {
