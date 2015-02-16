@@ -46,7 +46,6 @@ class carbon(
   $aggregation_rules = {},
   $relay_rules = {
     'default' => {
-      is_default   => true,
       destinations => '127.0.0.1:2004:a, 127.0.0.1:2104:b',
     },
   },
@@ -130,6 +129,20 @@ class carbon(
   }
 
   concat { "${prefix}/conf/relay-rules.conf":
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+    force => true,
+  }
+
+  concat { "${prefix}/conf/whitelist.conf":
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+    force => true,
+  }
+
+  concat { "${prefix}/conf/blacklist.conf":
     owner => 'root',
     group => 'root',
     mode  => '0644',

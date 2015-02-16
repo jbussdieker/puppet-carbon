@@ -5,7 +5,6 @@
 define carbon::relay_rule(
   $destinations,
   $pattern = undef,
-  $is_default = undef,
   $continue = undef,
   $prefix = '/opt/graphite',
   $order = 10,

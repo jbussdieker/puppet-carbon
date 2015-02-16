@@ -19,15 +19,15 @@ describe 'carbon::relay_rule' do
       :match => '[foo]',
     },
     {
-      :title    => 'should exclude default if undefined',
-      :attr     => 'title',
-      :value    => 'foo',
-      :notmatch => 'default',
+      :title    => 'should exclude default if pattern is set',
+      :attr     => 'pattern',
+      :value    => 'a',
+      :notmatch => 'default = true',
     },
     {
-      :title => 'should set default',
-      :attr  => 'is_default',
-      :value => 'true',
+      :title => "should set default when pattern isn't specified",
+      :attr  => 'title',
+      :value => 'foo',
       :match => 'default = true',
     },
     {
@@ -64,8 +64,6 @@ describe 'carbon::relay_rule' do
 
       let(:fragment_content) { param_value(subject.call, 'concat::fragment', title, :content) }
 
-      it { should contain_concat__fragment(title) }
-
       it param[:title] do
         Array(param[:match]).each do |item|
           fragment_content.should match(item)
@@ -75,6 +73,8 @@ describe 'carbon::relay_rule' do
           fragment_content.should_not match(item)
         end
       end
+
+      it { should contain_concat__fragment(title) }
     end
   end
 end
