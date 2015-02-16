@@ -28,6 +28,8 @@ carbon::revision: 0.9.11
 
 ## Resources
 
+Same resources can be order dependent in which case the `order` property should be specified.
+
 ### Aggregation Rules
 
 ```puppet
@@ -45,6 +47,13 @@ carbon::aggregation_rule { 'rollup':
 carbon::storage_schema { 'carbon':
   pattern    => '^carbon\.',
   retentions => '60:90d',
+  order      => 1,
+}
+
+carbon::storage_schema { 'default':
+  pattern    => '.*',
+  retentions => '60:90d',
+  order      => 99,
 }
 ```
 
@@ -64,10 +73,12 @@ carbon::storage_aggregation { 'sum':
 carbon::relay_rule { 'auditing':
   pattern      => 'auditing.*',
   destinations => '1.2.3.4:2004:a',
+  order        => 1,
 }
 
 carbon::relay_rule { 'default':
   destinations => '127.0.0.1:2004:a',
+  order        => 99,
 }
 
 ```
