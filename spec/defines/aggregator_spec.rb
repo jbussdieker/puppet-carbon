@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'carbon::aggregator' do
   let(:title) { 'a' }
-  let(:thing) { "/var/lib/puppet/concat/_opt_graphite_conf_carbon.conf/fragments/30_aggregator_#{title}" }
+  let(:concat_title) { "aggregator_#{title}" }
 
   describe "carbon.conf template content" do
     [
@@ -32,15 +32,27 @@ describe 'carbon::aggregator' do
       },
     ].each do |param|
       context "when #{param[:attr]} is #{param[:value]}" do
-        let :params do { param[:attr].to_sym => param[:value] } end
+        let(:params) do
+          { param[:attr].to_sym => param[:value] }
+        end
 
-        it { should contain_file(thing).with_mode('0640') }
+        if param[:attr] == 'title'
+          let(:title) { param[:value] }
+        end
+
+        let(:fragment_content) { param_value(subject.call, 'concat::fragment', concat_title, :content) }
+
         it param[:title] do
-          verify_contents(subject.call, thing, Array(param[:match]))
+          Array(param[:match]).each do |item|
+            fragment_content.should match(item)
+          end
+
           Array(param[:notmatch]).each do |item|
-            should contain_file(thing).without_content(item)
+            fragment_content.should_not match(item)
           end
         end
+
+        it { should contain_concat__fragment(concat_title) }
       end
     end
   end
