@@ -1,8 +1,8 @@
-# == Class: carbon::schema
+# == Class: carbon::storage_schema
 #
-# Configures a carbon schema entry
+# Configures a carbon storage schema entry
 #
-define carbon::schema(
+define carbon::storage_schema(
   $pattern,
   $retentions,
   $prefix = '/opt/graphite',
@@ -11,7 +11,7 @@ define carbon::schema(
 
   concat::fragment { $title:
     target  => "${prefix}/conf/storage-schemas.conf",
-    content => template('carbon/schema.erb'),
+    content => template('carbon/storage-schema.erb'),
     order   => $order,
   }
 

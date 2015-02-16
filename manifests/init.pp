@@ -31,7 +31,7 @@ class carbon(
   $caches = {},
   $relays = {},
   $aggregators = {},
-  $schemas = {
+  $storage_schemas = {
     'carbon' => {
       pattern    => '^carbon\.',
       retentions => '60:90d',
@@ -45,6 +45,7 @@ class carbon(
   },
   $aggregation_rules = {},
   $relay_rules = {},
+  $storage_aggregations = {},
 ) {
 
   package { 'python-twisted':
@@ -82,6 +83,13 @@ class carbon(
     mode  => '0644',
   }
 
+  concat { "${prefix}/conf/storage-aggregation.conf":
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+    force => true,
+  }
+
   concat { "${prefix}/conf/aggregation-rules.conf":
     owner => 'root',
     group => 'root',
@@ -96,7 +104,8 @@ class carbon(
     force => true,
   }
 
-  create_resources('carbon::schema', $schemas)
+  create_resources('carbon::storage_schema', $storage_schemas)
+  create_resources('carbon::storage_aggregation', $storage_aggregations)
   create_resources('carbon::aggregation_rule', $aggregation_rules)
   create_resources('carbon::relay_rule', $relay_rules)
 

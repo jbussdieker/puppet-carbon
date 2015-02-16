@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe 'carbon' do
+  it { should compile }
+
   #it 'prints the catalog' do
   #  $stderr.puts subject.call.to_yaml
   #end

@@ -18,6 +18,18 @@ describe 'carbon::aggregator' do
         :value => '2004',
         :match => 'LINE_RECEIVER_PORT = 2004',
       },
+      {
+        :title => 'should set pickle_receiver_interface',
+        :attr  => 'pickle_receiver_interface',
+        :value => '0.0.0.0',
+        :match => 'PICKLE_RECEIVER_INTERFACE = 0.0.0.0',
+      },
+      {
+        :title => 'should set pickle_receiver_port',
+        :attr  => 'pickle_receiver_port',
+        :value => '2024',
+        :match => 'PICKLE_RECEIVER_PORT = 2024',
+      },
     ].each do |param|
       context "when #{param[:attr]} is #{param[:value]}" do
         let :params do { param[:attr].to_sym => param[:value] } end
