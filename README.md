@@ -82,3 +82,87 @@ carbon::relay_rule { 'default':
 }
 
 ```
+
+## Advanced Example
+
+Most resources can be passed into the main class as a hash to support Hiera usage.
+
+```puppet
+class { 'carbon':
+  revision => 'master',
+  caches      => {
+    'a' => {
+      line_receiver_port   => 2003,
+      pickle_receiver_port => 2004,
+      cache_query_port     => 7002,
+    },
+    'b' => {
+      line_receiver_port   => 2103,
+      pickle_receiver_port => 2104,
+      cache_query_port     => 7102,
+    }
+  },
+  relays      => {
+    'a' => {
+      relay_method         => 'consistent-hashing',
+      line_receiver_port   => 2013,
+      pickle_receiver_port => 2014,
+    },
+    'b' => {
+      relay_method         => 'consistent-hashing',
+      line_receiver_port   => 2113,
+      pickle_receiver_port => 2114,
+    }
+  },
+  aggregators => {
+    'a' => {
+      line_receiver_port   => 2023,
+      pickle_receiver_port => 2024,
+    },
+    'b' => {
+      line_receiver_port   => 2123,
+      pickle_receiver_port => 2124,
+    }
+  },
+  storage_schemas => {
+    'carbon' => {
+      pattern    => '^carbon\.',
+      retentions => '60:90d',
+      order      => 1,
+    },
+    'default_1min_for_1day' => {
+      pattern    => '.*',
+      retentions => '60s:1d',
+      order      => 99,
+    },
+  },
+  storage_aggregations => {
+    'carbon_agg_test' => {
+      pattern            => '^carbon\.',
+      x_files_factor     => '0.7',
+      aggregation_method => 'sum',
+    },
+  },
+  aggregation_rules => {
+    'rollups' => {
+      output_template => 'foo.*',
+      frequency       => '60',
+      method          => 'sum',
+      input_pattern   => 'bar.*',
+    }
+  },
+  relay_rules => {
+    'test1' => {
+      pattern      => 'test1.*',
+      destinations => '127.0.0.1:2004',
+      continue     => true,
+      order        => 1,
+    },
+    'default' => {
+      destinations => '127.0.0.1:2004',
+      continue     => false,
+      order        => 99,
+    },
+  },
+}
+```
