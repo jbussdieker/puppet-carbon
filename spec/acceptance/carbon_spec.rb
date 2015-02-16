@@ -39,7 +39,7 @@ describe 'carbon class' do
             pickle_receiver_port => 2124,
           }
         },
-        schemas     => {
+        storage_schemas => {
           'carbon' => {
             pattern    => '^carbon\.',
             retentions => '60:90d',
@@ -49,6 +49,13 @@ describe 'carbon class' do
             pattern    => '.*',
             retentions => '60s:1d',
             order      => 99,
+          },
+        },
+        storage_aggregations => {
+          'carbon_agg_test' => {
+            pattern            => '^carbon\.',
+            x_files_factor     => '0.7',
+            aggregation_method => 'sum',
           },
         },
         aggregation_rules => {
@@ -63,14 +70,11 @@ describe 'carbon class' do
           'test1' => {
             pattern      => 'test1.*',
             destinations => '127.0.0.1:2004',
-            is_default   => false,
             continue     => true,
             order        => 1,
           },
           'default' => {
-            pattern      => '.*',
             destinations => '127.0.0.1:2004',
-            is_default   => true,
             continue     => false,
             order        => 99,
           },
