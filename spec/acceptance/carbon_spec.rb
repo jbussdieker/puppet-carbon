@@ -7,21 +7,36 @@ describe 'carbon class' do
         revision => 'master',
         caches      => {
           'a' => {
-            line_receiver_interface => '0.0.0.0',
-            line_receiver_port      => 2003,
+            line_receiver_port   => 2003,
+            pickle_receiver_port => 2004,
+            cache_query_port     => 7002,
+          },
+          'b' => {
+            line_receiver_port   => 2103,
+            pickle_receiver_port => 2104,
+            cache_query_port     => 7102,
           }
         },
         relays      => {
           'a' => {
-            relay_method            => 'consistent-hashing',
-            line_receiver_interface => '0.0.0.0',
-            line_receiver_port      => 2013,
+            relay_method         => 'consistent-hashing',
+            line_receiver_port   => 2013,
+            pickle_receiver_port => 2014,
+          },
+          'b' => {
+            relay_method         => 'consistent-hashing',
+            line_receiver_port   => 2113,
+            pickle_receiver_port => 2114,
           }
         },
         aggregators => {
           'a' => {
-            line_receiver_interface => '0.0.0.0',
-            line_receiver_port      => 2023,
+            line_receiver_port   => 2023,
+            pickle_receiver_port => 2024,
+          },
+          'b' => {
+            line_receiver_port   => 2123,
+            pickle_receiver_port => 2124,
           }
         },
         schemas     => {
@@ -34,6 +49,30 @@ describe 'carbon class' do
             pattern    => '.*',
             retentions => '60s:1d',
             order      => 99,
+          },
+        },
+        aggregation_rules => {
+          'rollups' => {
+            output_template => 'foo.*',
+            frequency       => '60',
+            method          => 'sum',
+            input_pattern   => 'bar.*',
+          }
+        },
+        relay_rules => {
+          'test1' => {
+            pattern      => 'test1.*',
+            destinations => '127.0.0.1:2004',
+            is_default   => false,
+            continue     => true,
+            order        => 1,
+          },
+          'default' => {
+            pattern      => '.*',
+            destinations => '127.0.0.1:2004',
+            is_default   => true,
+            continue     => false,
+            order        => 99,
           },
         },
       }
