@@ -3,7 +3,7 @@
 [![Puppet Forge](http://img.shields.io/puppetforge/v/jbussdieker/carbon.svg)](https://forge.puppetlabs.com/jbussdieker/carbon)
 [![Build Status](https://travis-ci.org/jbussdieker/puppet-carbon.svg?branch=master)](https://travis-ci.org/jbussdieker/puppet-carbon)
 
-## Beginning with Carbon
+## Usage
 
 To install Carbon with the default parameters
 
