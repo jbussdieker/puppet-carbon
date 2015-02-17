@@ -102,7 +102,7 @@ class carbon(
     require => Vcsrepo[$path],
   }
 
-  file { "${prefix}":
+  file { $prefix:
     ensure  => directory,
     require => Exec['install_carbon'],
   }
@@ -116,9 +116,9 @@ class carbon(
   }
 
   file { "${prefix}/storage/whisper":
+    ensure => directory,
     owner  => $user,
     group  => $user,
-    ensure => directory,
   }
 
   concat { "${prefix}/conf/carbon.conf":
