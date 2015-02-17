@@ -51,6 +51,6 @@ describe 'carbon::cache' do
     end
   end
 
-  it { should contain_file("/etc/init/carbon-cache-#{title}.conf") }
+  it { should contain_file("/etc/init.d/carbon-cache-#{title}") }
   it { should contain_service("carbon-cache-#{title}") }
 end

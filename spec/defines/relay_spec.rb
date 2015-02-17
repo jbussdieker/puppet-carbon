@@ -153,6 +153,6 @@ describe 'carbon::relay' do
     end
   end
 
-  it { should contain_file("/etc/init/carbon-relay-#{title}.conf") }
+  it { should contain_file("/etc/init.d/carbon-relay-#{title}") }
   it { should contain_service("carbon-relay-#{title}") }
 end

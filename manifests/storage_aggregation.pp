@@ -6,9 +6,14 @@ define carbon::storage_aggregation(
   $pattern,
   $x_files_factor = undef,
   $aggregation_method = undef,
-  $prefix = '/opt/graphite',
   $order = 10,
 ) {
+
+  if $::carbon::prefix {
+    $prefix = $::carbon::prefix
+  } else {
+    $prefix = '/opt/graphite'
+  }
 
   concat::fragment { $title:
     target  => "${prefix}/conf/storage-aggregation.conf",

@@ -4,7 +4,6 @@
 #
 define carbon::aggregator(
   $is_default = false,
-  $prefix = '/opt/graphite',
   $line_receiver_interface = '0.0.0.0',
   $line_receiver_port = 2023,
   $pickle_receiver_interface = '0.0.0.0',
@@ -23,18 +22,33 @@ define carbon::aggregator(
   $log_listener_conn_success = true,
 ) {
 
+  if $::carbon::user {
+    $user = $::carbon::user
+  } else {
+    $user = ''
+  }
+
+  if $::carbon::prefix {
+    $prefix = $::carbon::prefix
+  } else {
+    $prefix = '/opt/graphite'
+  }
+
+  $service_template = 'carbon/aggregator.initd.erb'
+  $service_file = "/etc/init.d/carbon-aggregator-${name}"
+
   concat::fragment { "aggregator_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/aggregator.erb'),
     order   => 30,
   }
 
-  file { "/etc/init/carbon-aggregator-${name}.conf":
+  file { $service_file:
     ensure  => present,
-    mode    => '0644',
+    mode    => '0755',
     owner   => 'root',
     group   => 'root',
-    content => template('carbon/aggregator.init.erb'),
+    content => template($service_template),
     notify  => Service["carbon-aggregator-${name}"],
     require => File["${prefix}/conf/carbon.conf"],
   }
@@ -42,7 +56,10 @@ define carbon::aggregator(
   service { "carbon-aggregator-${name}":
     ensure  => running,
     enable  => true,
-    require => File["/etc/init/carbon-aggregator-${name}.conf"],
+    require => [
+      File[$service_file],
+      File["${prefix}/conf/storage-schemas.conf"],
+    ],
   }
 
 }

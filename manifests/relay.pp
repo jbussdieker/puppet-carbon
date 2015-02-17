@@ -4,7 +4,6 @@
 #
 define carbon::relay(
   $is_default = false,
-  $prefix = '/opt/graphite',
   $line_receiver_interface = '0.0.0.0',
   $line_receiver_port = 2013,
   $pickle_receiver_interface = '0.0.0.0',
@@ -27,6 +26,21 @@ define carbon::relay(
   $min_reset_interval = 121
 ) {
 
+  if $::carbon::user {
+    $user = $::carbon::user
+  } else {
+    $user = ''
+  }
+
+  if $::carbon::prefix {
+    $prefix = $::carbon::prefix
+  } else {
+    $prefix = '/opt/graphite'
+  }
+
+  $service_template = 'carbon/relay.initd.erb'
+  $service_file = "/etc/init.d/carbon-relay-${name}"
+
   concat::fragment { "relay_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/relay.erb'),
@@ -34,12 +48,12 @@ define carbon::relay(
     notify  => Service["carbon-relay-${name}"],
   }
 
-  file { "/etc/init/carbon-relay-${name}.conf":
+  file { $service_file:
     ensure  => present,
-    mode    => '0644',
+    mode    => '0755',
     owner   => 'root',
     group   => 'root',
-    content => template('carbon/relay.init.erb'),
+    content => template($service_template),
     notify  => Service["carbon-relay-${name}"],
     require => File["${prefix}/conf/carbon.conf"],
   }
@@ -47,7 +61,10 @@ define carbon::relay(
   service { "carbon-relay-${name}":
     ensure  => running,
     enable  => true,
-    require => File["/etc/init/carbon-relay-${name}.conf"],
+    require => [
+      File[$service_file],
+      File["${prefix}/conf/storage-schemas.conf"],
+    ],
   }
 
 }

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'carbon' do
-  let(:prefix) { "/opt/graphite" }
+  let(:prefix) { "/foo/bar" }
   let(:params) {
     {
       :prefix => prefix,
@@ -21,10 +21,7 @@ describe 'carbon' do
   #end
 
   it 'sets default schemas' do
-    verify_contents(
-      subject.call,
-      "/var/lib/puppet/concat/_opt_graphite_conf_storage-schemas.conf/fragments/99_default_1min_for_1day",
-      ["[default_1min_for_1day]"]
-    )
+    default_schema = param_value(subject.call, 'concat::fragment', 'default_1min_for_1day', :content)
+    default_schema.should match("[default_1min_for_1day]")
   end
 end

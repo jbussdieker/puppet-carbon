@@ -62,4 +62,12 @@ describe 'carbon::storage_schema' do
       end
     end
   end
+
+  context 'target' do
+    let(:target) { param_value(subject.call, 'concat::fragment', title, :target) }
+
+    it 'should be /opt/graphite/conf/storage-schemas.conf' do
+      target.should eql('/opt/graphite/conf/storage-schemas.conf')
+    end
+  end
 end

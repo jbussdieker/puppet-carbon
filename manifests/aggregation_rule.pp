@@ -7,9 +7,14 @@ define carbon::aggregation_rule(
   $frequency,
   $method,
   $input_pattern,
-  $prefix = '/opt/graphite',
   $order = 10,
 ) {
+
+  if $::carbon::prefix {
+    $prefix = $::carbon::prefix
+  } else {
+    $prefix = '/opt/graphite'
+  }
 
   concat::fragment { $title:
     target  => "${prefix}/conf/aggregation-rules.conf",

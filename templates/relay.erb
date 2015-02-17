@@ -1,4 +1,9 @@
 [relay<%= ":#{@name}" unless @is_default %>]
+# Specify the user to drop privileges to
+# If this is blank carbon runs as the user that invokes it
+# This user must have write access to the local data directory
+USER = <%= @user %>
+
 LINE_RECEIVER_INTERFACE = <%= @line_receiver_interface %>
 LINE_RECEIVER_PORT = <%= @line_receiver_port %>
 PICKLE_RECEIVER_INTERFACE = <%= @pickle_receiver_interface %>

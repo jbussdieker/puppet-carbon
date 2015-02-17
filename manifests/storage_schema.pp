@@ -5,9 +5,14 @@
 define carbon::storage_schema(
   $pattern,
   $retentions,
-  $prefix = '/opt/graphite',
   $order = 10,
 ) {
+
+  if $::carbon::prefix {
+    $prefix = $::carbon::prefix
+  } else {
+    $prefix = '/opt/graphite'
+  }
 
   concat::fragment { $title:
     target  => "${prefix}/conf/storage-schemas.conf",

@@ -28,6 +28,7 @@ class carbon(
   $source = 'https://github.com/graphite-project/carbon.git',
   $path = '/usr/local/src/carbon',
   $revision = 'master',
+  $user = undef,
   $caches = {},
   $relays = {},
   $aggregators = {},
@@ -77,6 +78,12 @@ class carbon(
   },
 ) {
 
+  if $user {
+    $real_user = $user
+  } else {
+    $real_user = 'root'
+  }
+
   package { 'python-twisted':
     ensure => present,
   }
@@ -90,14 +97,28 @@ class carbon(
 
   exec { 'install_carbon':
     cwd     => $path,
-    command => "/usr/bin/python setup.py install --prefix ${prefix}",
+    command => "/usr/bin/python setup.py install --install-lib ${prefix}/lib --prefix ${prefix}",
     creates => "${prefix}/bin/carbon-cache.py",
     require => Vcsrepo[$path],
   }
 
-  file { "${prefix}/conf":
+  file { "${prefix}":
     ensure  => directory,
     require => Exec['install_carbon'],
+  }
+
+  file { "${prefix}/conf":
+    ensure => directory,
+  }
+
+  file { "${prefix}/storage":
+    ensure => directory,
+  }
+
+  file { "${prefix}/storage/whisper":
+    owner  => $user,
+    group  => $user,
+    ensure => directory,
   }
 
   concat { "${prefix}/conf/carbon.conf":

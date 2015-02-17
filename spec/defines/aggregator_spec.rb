@@ -57,6 +57,6 @@ describe 'carbon::aggregator' do
     end
   end
 
-  it { should contain_file("/etc/init/carbon-aggregator-#{title}.conf") }
+  it { should contain_file("/etc/init.d/carbon-aggregator-#{title}") }
   it { should contain_service("carbon-aggregator-#{title}") }
 end

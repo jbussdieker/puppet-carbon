@@ -4,9 +4,7 @@
 #
 define carbon::cache(
   $is_default = false,
-  $prefix = '/opt/graphite',
-  $local_data_dir = '/opt/graphite/storage/whisper/',
-  $user = '',
+  $local_data_dir = undef,
   $max_cache_size = 'inf',
   $max_updates_per_second = 500,
   $max_updates_per_second_on_shutdown = 1000,
@@ -48,6 +46,21 @@ define carbon::cache(
   $bind_patterns = '#'
 ) {
 
+  if $::carbon::user {
+    $user = $::carbon::user
+  } else {
+    $user = ''
+  }
+
+  if $::carbon::prefix {
+    $prefix = $::carbon::prefix
+  } else {
+    $prefix = '/opt/graphite'
+  }
+
+  $service_template = 'carbon/cache.initd.erb'
+  $service_file = "/etc/init.d/carbon-cache-${name}"
+
   concat::fragment { "cache_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/cache.erb'),
@@ -55,12 +68,12 @@ define carbon::cache(
     notify  => Service["carbon-cache-${name}"],
   }
 
-  file { "/etc/init/carbon-cache-${name}.conf":
+  file { $service_file:
     ensure  => present,
-    mode    => '0644',
+    mode    => '0755',
     owner   => 'root',
     group   => 'root',
-    content => template('carbon/cache.init.erb'),
+    content => template($service_template),
     notify  => Service["carbon-cache-${name}"],
     require => File["${prefix}/conf/carbon.conf"],
   }
@@ -68,7 +81,10 @@ define carbon::cache(
   service { "carbon-cache-${name}":
     ensure  => running,
     enable  => true,
-    require => File["/etc/init/carbon-cache-${name}.conf"],
+    require => [
+      File[$service_file],
+      File["${prefix}/conf/storage-schemas.conf"],
+    ],
   }
 
 }
