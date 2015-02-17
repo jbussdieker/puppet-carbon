@@ -3,7 +3,6 @@
 # Configures an instance of carbon-aggregator
 #
 define carbon::aggregator(
-  $is_default = false,
   $line_receiver_interface = '0.0.0.0',
   $line_receiver_port = 2023,
   $pickle_receiver_interface = '0.0.0.0',

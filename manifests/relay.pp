@@ -3,7 +3,6 @@
 # Configures an instance of carbon-relay
 #
 define carbon::relay(
-  $is_default = false,
   $line_receiver_interface = '0.0.0.0',
   $line_receiver_port = 2013,
   $pickle_receiver_interface = '0.0.0.0',

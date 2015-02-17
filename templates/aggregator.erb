@@ -1,4 +1,4 @@
-[aggregator<%= ":#{@name}" unless @is_default %>]
+[aggregator<%= ":#{@name}" unless @name == 'default' %>]
 # Specify the user to drop privileges to
 # If this is blank carbon runs as the user that invokes it
 # This user must have write access to the local data directory

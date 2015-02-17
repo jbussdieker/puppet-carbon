@@ -1,7 +1,7 @@
 require 'spec_helper_acceptance'
 
 describe 'carbon class' do
-  let(:prefix) { "/opt/poopy" }
+  let(:prefix) { "/opt/foo" }
   let(:manifest) {
     <<-EOS
       user { 'carbon':
@@ -13,6 +13,9 @@ describe 'carbon class' do
         prefix   => '#{prefix}',
         user     => 'carbon',
         caches      => {
+          'default' => {
+            local_data_dir => '/tmp/carbondata',
+          },
           'a' => {
             line_receiver_port   => 2003,
             pickle_receiver_port => 2004,
@@ -25,18 +28,22 @@ describe 'carbon class' do
           }
         },
         relays      => {
+          'default' => {
+            relay_method => 'consistent-hashing',
+          },
           'a' => {
-            relay_method         => 'consistent-hashing',
             line_receiver_port   => 2013,
             pickle_receiver_port => 2014,
           },
           'b' => {
-            relay_method         => 'consistent-hashing',
             line_receiver_port   => 2113,
             pickle_receiver_port => 2114,
           }
         },
         aggregators => {
+          'default' => {
+            max_queue_size => 'inf',
+          },
           'a' => {
             line_receiver_port   => 2023,
             pickle_receiver_port => 2024,

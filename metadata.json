@@ -1,6 +1,6 @@
 {
   "name": "jbussdieker-carbon",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "author": "Joshua Bussdieker",
   "summary": "Puppet Carbon management module",
   "license": "MIT",
@@ -12,6 +12,10 @@
     {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [ "14.04", "12.04" ]
+    },
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [ "7", "6" ]
     }
   ],
   "dependencies": [

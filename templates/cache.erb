@@ -1,4 +1,4 @@
-[cache<%= ":#{@name}" unless @is_default %>]
+[cache<%= ":#{@name}" unless @name == 'default' %>]
 # Configure carbon directories.
 #
 # OS environment variables can be used to tell carbon where graphite is

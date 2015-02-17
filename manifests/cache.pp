@@ -3,7 +3,6 @@
 # Configures an instance of carbon-cache
 #
 define carbon::cache(
-  $is_default = false,
   $local_data_dir = undef,
   $max_cache_size = 'inf',
   $max_updates_per_second = 500,
