@@ -4,52 +4,48 @@
 #
 define carbon::cache(
   $local_data_dir = undef,
-  $max_cache_size = 'inf',
-  $max_updates_per_second = 500,
-  $max_updates_per_second_on_shutdown = 1000,
-  $max_creates_per_minute = 50,
-  $line_receiver_interface = '0.0.0.0',
-  $line_receiver_port = 2003,
-  $enable_udp_listener = false,
-  $udp_receiver_interface = '0.0.0.0',
-  $udp_receiver_port = 2003,
-  $pickle_receiver_interface = '0.0.0.0',
-  $pickle_receiver_port = 2004,
-  $use_insecure_unpickler = false,
-  $cache_query_interface = '0.0.0.0',
-  $cache_query_port = 7002,
-  $use_flow_control = true,
-  $log_updates = false,
-  $log_cache_hits = false,
-  $whisper_autoflush = false,
-  $whisper_sparse_create = false,
-  $whisper_fallocate_create = false,
-  $whisper_lock_writes = false,
-  $use_whitelist = false,
+  $max_cache_size = undef,
+  $max_updates_per_second = undef,
+  $max_updates_per_second_on_shutdown = undef,
+  $max_creates_per_minute = undef,
+  $line_receiver_interface = undef,
+  $line_receiver_port = undef,
+  $enable_udp_listener = undef,
+  $udp_receiver_interface = undef,
+  $udp_receiver_port = undef,
+  $pickle_receiver_interface = undef,
+  $pickle_receiver_port = undef,
+  $use_insecure_unpickler = undef,
+  $cache_query_interface = undef,
+  $cache_query_port = undef,
+  $use_flow_control = undef,
+  $log_updates = undef,
+  $log_cache_hits = undef,
+  $whisper_autoflush = undef,
+  $whisper_sparse_create = undef,
+  $whisper_fallocate_create = undef,
+  $whisper_lock_writes = undef,
+  $use_whitelist = undef,
   $carbon_metric_prefix = undef,
   $carbon_metric_interval = undef,
-  $enable_amqp = false,
-  $amqp_verbose = false,
-  $amqp_host = 'localhost',
-  $amqp_port = 5672,
-  $amqp_vhost = '/',
-  $amqp_user = 'guest',
-  $amqp_password = 'guest',
-  $amqp_exchange = 'graphite',
-  $amqp_metric_name_in_body = false,
-  $enable_manhole = false,
-  $manhole_interface = '127.0.0.1',
-  $manhole_port = 7222,
-  $manhole_user = 'admin',
-  $manhole_public_key = 'ssh-rsa AAAAB3NzaC1yc2EAAAABiwAaAIEAoxN0sv/e4eZCPpi3N3KYvyzRaBaMeS2RsOQ/cDuKv11dlNzVeiyc3RFmCv5Rjwn/lQ79y0zyHxw67qLyhQ/kDzINc4cY41ivuQXm2tPmgvexdrBv5nsfEpjs3gLZfJnyvlcVyWK/lId8WUvEWSWHTzsbtmXAF2raJMdgLTbQ8wE=',
-  $bind_patterns = '#'
+  $enable_amqp = undef,
+  $amqp_verbose = undef,
+  $amqp_host = undef,
+  $amqp_port = undef,
+  $amqp_vhost = undef,
+  $amqp_user = undef,
+  $amqp_password = undef,
+  $amqp_exchange = undef,
+  $amqp_metric_name_in_body = undef,
+  $enable_manhole = undef,
+  $manhole_interface = undef,
+  $manhole_port = undef,
+  $manhole_user = undef,
+  $manhole_public_key = undef,
+  $bind_patterns = undef
 ) {
 
-  if $::carbon::user {
-    $user = $::carbon::user
-  } else {
-    $user = ''
-  }
+  $user = $::carbon::user
 
   if $::carbon::prefix {
     $prefix = $::carbon::prefix
@@ -80,14 +76,16 @@ define carbon::cache(
       ],
     }
     $fragment_notify = Service["carbon-cache-${name}"]
+    $fragment_order = 20
   } else {
     $fragment_notify = []
+    $fragment_order = 10
   }
 
   concat::fragment { "cache_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/cache.erb'),
-    order   => 10,
+    order   => $fragment_order,
     notify  => $fragment_notify,
   }
 

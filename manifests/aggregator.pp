@@ -3,29 +3,25 @@
 # Configures an instance of carbon-aggregator
 #
 define carbon::aggregator(
-  $line_receiver_interface = '0.0.0.0',
-  $line_receiver_port = 2023,
-  $pickle_receiver_interface = '0.0.0.0',
-  $pickle_receiver_port = 2024,
-  $rules = 'aggregation-rules.conf',
-  $destinations = '127.0.0.1:2004',
-  $replication_factor = 1,
-  $max_queue_size = 10000,
-  $use_flow_control = true,
-  $max_datapoints_per_message = 500,
-  $max_aggregation_intervals = 5,
-  $write_back_frequency = 0,
-  $use_whitelist = false,
-  $carbon_metric_prefix = 'carbon',
-  $carbon_metric_interval = 60,
-  $log_listener_conn_success = true,
+  $line_receiver_interface = undef,
+  $line_receiver_port = undef,
+  $pickle_receiver_interface = undef,
+  $pickle_receiver_port = undef,
+  $rules = undef,
+  $destinations = undef,
+  $replication_factor = undef,
+  $max_queue_size = undef,
+  $use_flow_control = undef,
+  $max_datapoints_per_message = undef,
+  $max_aggregation_intervals = undef,
+  $write_back_frequency = undef,
+  $use_whitelist = undef,
+  $carbon_metric_prefix = undef,
+  $carbon_metric_interval = undef,
+  $log_listener_conn_success = undef,
 ) {
 
-  if $::carbon::user {
-    $user = $::carbon::user
-  } else {
-    $user = ''
-  }
+  $user = $::carbon::user
 
   if $::carbon::prefix {
     $prefix = $::carbon::prefix
@@ -56,14 +52,16 @@ define carbon::aggregator(
       ],
     }
     $fragment_notify = Service["carbon-aggregator-${name}"]
+    $fragment_order = 60
   } else {
     $fragment_notify = []
+    $fragment_order = 50
   }
 
   concat::fragment { "aggregator_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/aggregator.erb'),
-    order   => 30,
+    order   => $fragment_order,
     notify  => $fragment_notify,
   }
 
