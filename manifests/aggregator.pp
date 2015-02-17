@@ -33,32 +33,38 @@ define carbon::aggregator(
     $prefix = '/opt/graphite'
   }
 
-  $service_template = 'carbon/aggregator.initd.erb'
-  $service_file = "/etc/init.d/carbon-aggregator-${name}"
+  if $name != 'default' {
+    $service_template = 'carbon/aggregator.initd.erb'
+    $service_file = "/etc/init.d/carbon-aggregator-${name}"
+
+    file { $service_file:
+      ensure  => present,
+      mode    => '0755',
+      owner   => 'root',
+      group   => 'root',
+      content => template($service_template),
+      notify  => Service["carbon-aggregator-${name}"],
+      require => File["${prefix}/conf/carbon.conf"],
+    }
+
+    service { "carbon-aggregator-${name}":
+      ensure  => running,
+      enable  => true,
+      require => [
+        File[$service_file],
+        File["${prefix}/conf/storage-schemas.conf"],
+      ],
+    }
+    $fragment_notify = Service["carbon-aggregator-${name}"]
+  } else {
+    $fragment_notify = []
+  }
 
   concat::fragment { "aggregator_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/aggregator.erb'),
     order   => 30,
-  }
-
-  file { $service_file:
-    ensure  => present,
-    mode    => '0755',
-    owner   => 'root',
-    group   => 'root',
-    content => template($service_template),
-    notify  => Service["carbon-aggregator-${name}"],
-    require => File["${prefix}/conf/carbon.conf"],
-  }
-
-  service { "carbon-aggregator-${name}":
-    ensure  => running,
-    enable  => true,
-    require => [
-      File[$service_file],
-      File["${prefix}/conf/storage-schemas.conf"],
-    ],
+    notify  => $fragment_notify,
   }
 
 }

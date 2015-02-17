@@ -22,8 +22,11 @@ PICKLE_RECEIVER_PORT = <%= @pickle_receiver_port %>
 # that map to a given aggregation rule are sent to the same carbon-aggregator
 # instance.
 # Enable this for carbon-relays that send to a group of carbon-aggregators
-#RELAY_METHOD = aggregated-consistent-hashing
+<% if @relay_method %>
 RELAY_METHOD = <%= @relay_method %>
+<% else %>
+#RELAY_METHOD = aggregated-consistent-hashing
+<% end %>
 
 # If you use consistent-hashing you can add redundancy by replicating every
 # datapoint to more than one machine.

@@ -7,7 +7,7 @@ define carbon::relay(
   $line_receiver_port = 2013,
   $pickle_receiver_interface = '0.0.0.0',
   $pickle_receiver_port = 2014,
-  $relay_method = 'rules',
+  $relay_method = undef,
   $replication_factor = 1,
   $destinations = '127.0.0.1:2004',
   $max_queue_size = 10000,
@@ -37,33 +37,38 @@ define carbon::relay(
     $prefix = '/opt/graphite'
   }
 
-  $service_template = 'carbon/relay.initd.erb'
-  $service_file = "/etc/init.d/carbon-relay-${name}"
+  if $name != 'default' {
+    $service_template = 'carbon/relay.initd.erb'
+    $service_file = "/etc/init.d/carbon-relay-${name}"
+
+    file { $service_file:
+      ensure  => present,
+      mode    => '0755',
+      owner   => 'root',
+      group   => 'root',
+      content => template($service_template),
+      notify  => Service["carbon-relay-${name}"],
+      require => File["${prefix}/conf/carbon.conf"],
+    }
+
+    service { "carbon-relay-${name}":
+      ensure  => running,
+      enable  => true,
+      require => [
+        File[$service_file],
+        File["${prefix}/conf/storage-schemas.conf"],
+      ],
+    }
+    $fragment_notify = Service["carbon-relay-${name}"]
+  } else {
+    $fragment_notify = []
+  }
 
   concat::fragment { "relay_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/relay.erb'),
     order   => 20,
-    notify  => Service["carbon-relay-${name}"],
-  }
-
-  file { $service_file:
-    ensure  => present,
-    mode    => '0755',
-    owner   => 'root',
-    group   => 'root',
-    content => template($service_template),
-    notify  => Service["carbon-relay-${name}"],
-    require => File["${prefix}/conf/carbon.conf"],
-  }
-
-  service { "carbon-relay-${name}":
-    ensure  => running,
-    enable  => true,
-    require => [
-      File[$service_file],
-      File["${prefix}/conf/storage-schemas.conf"],
-    ],
+    notify  => $fragment_notify,
   }
 
 }

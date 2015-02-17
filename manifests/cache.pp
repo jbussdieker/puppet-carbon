@@ -57,33 +57,38 @@ define carbon::cache(
     $prefix = '/opt/graphite'
   }
 
-  $service_template = 'carbon/cache.initd.erb'
-  $service_file = "/etc/init.d/carbon-cache-${name}"
+  if $name != 'default' {
+    $service_template = 'carbon/cache.initd.erb'
+    $service_file = "/etc/init.d/carbon-cache-${name}"
+
+    file { $service_file:
+      ensure  => present,
+      mode    => '0755',
+      owner   => 'root',
+      group   => 'root',
+      content => template($service_template),
+      notify  => Service["carbon-cache-${name}"],
+      require => File["${prefix}/conf/carbon.conf"],
+    }
+
+    service { "carbon-cache-${name}":
+      ensure  => running,
+      enable  => true,
+      require => [
+        File[$service_file],
+        File["${prefix}/conf/storage-schemas.conf"],
+      ],
+    }
+    $fragment_notify = Service["carbon-cache-${name}"]
+  } else {
+    $fragment_notify = []
+  }
 
   concat::fragment { "cache_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/cache.erb'),
     order   => 10,
-    notify  => Service["carbon-cache-${name}"],
-  }
-
-  file { $service_file:
-    ensure  => present,
-    mode    => '0755',
-    owner   => 'root',
-    group   => 'root',
-    content => template($service_template),
-    notify  => Service["carbon-cache-${name}"],
-    require => File["${prefix}/conf/carbon.conf"],
-  }
-
-  service { "carbon-cache-${name}":
-    ensure  => running,
-    enable  => true,
-    require => [
-      File[$service_file],
-      File["${prefix}/conf/storage-schemas.conf"],
-    ],
+    notify  => $fragment_notify,
   }
 
 }
