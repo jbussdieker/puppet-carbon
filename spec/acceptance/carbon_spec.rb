@@ -30,6 +30,7 @@ describe 'carbon class' do
         relays      => {
           'default' => {
             relay_method => 'consistent-hashing',
+            destinations => '127.0.0.1:2004:a, 127.0.0.1:2104:b',
           },
           'a' => {
             line_receiver_port   => 2013,
@@ -43,6 +44,7 @@ describe 'carbon class' do
         aggregators => {
           'default' => {
             max_queue_size => 'inf',
+            destinations   => '127.0.0.1:2004:a, 127.0.0.1:2104:b',
           },
           'a' => {
             line_receiver_port   => 2023,

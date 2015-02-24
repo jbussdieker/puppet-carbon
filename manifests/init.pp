@@ -84,8 +84,14 @@ class carbon(
     $real_user = 'root'
   }
 
-  package { 'python-twisted':
-    ensure => present,
+  if $operatingsystem == "CentOS" {
+    package { 'python-twisted-core':
+      ensure => present,
+    }
+  } else {
+    package { 'python-twisted':
+      ensure => present,
+    }
   }
 
   vcsrepo { $path:
@@ -108,7 +114,9 @@ class carbon(
   }
 
   file { "${prefix}/conf":
-    ensure => directory,
+    ensure  => directory,
+    purge   => true,
+    recurse => true,
   }
 
   file { "${prefix}/storage":
@@ -143,6 +151,20 @@ class carbon(
   }
 
   concat { "${prefix}/conf/aggregation-rules.conf":
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+    force => true,
+  }
+
+  concat { "${prefix}/conf/rewrite-rules.conf":
+    owner => 'root',
+    group => 'root',
+    mode  => '0644',
+    force => true,
+  }
+
+  concat { "${prefix}/conf/carbon.amqp.conf":
     owner => 'root',
     group => 'root',
     mode  => '0644',

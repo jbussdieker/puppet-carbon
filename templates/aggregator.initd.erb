@@ -17,15 +17,31 @@ PIDFILE="<%= @prefix %>/storage/${NAME}.pid"
 
 test -x $DAEMON || exit 0
 
-. /lib/lsb/init-functions
+[ -f /lib/lsb/init-functions ] && . /lib/lsb/init-functions
+[ -f /etc/init.d/functions ] && . /etc/init.d/functions
+
+log_begin_msg() {
+  echo $@
+}
+
+log_end_msg() {
+  echo $@
+}
+
+log_success_msg() {
+  echo $@
+}
+
+log_failure_msg() {
+  echo $@
+}
 
 start_carbon_aggregator() {
-    start-stop-daemon --start --quiet --pidfile $PIDFILE \
-      --startas $DAEMON -- start $DAEMON_OPTS
+    $DAEMON start $DAEMON_OPTS
 }
 
 stop_carbon_aggregator() {
-    start-stop-daemon --stop --retry TERM/10/KILL/5 --quiet --oknodo --pidfile $PIDFILE
+    $DAEMON stop $DAEMON_OPTS
 }
 
 status_carbon_aggregator() {
