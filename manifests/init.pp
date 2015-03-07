@@ -111,10 +111,6 @@ class carbon(
     ensure => directory,
   }
 
-  file { "${prefix}/storage":
-    ensure => directory,
-  }
-
   file { "${prefix}/storage/whisper":
     ensure => directory,
     owner  => $user,
