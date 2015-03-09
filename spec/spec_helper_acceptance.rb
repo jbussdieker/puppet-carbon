@@ -25,9 +25,6 @@ RSpec.configure do |c|
       on host, puppet('module', 'install', 'jbussdieker-whisper'), { :acceptable_exit_codes => [0,1] }
       apply_manifest(%{
         include git
-        class { 'whisper':
-          ensure => 'master',
-        }
       })
     end
   end

@@ -57,6 +57,7 @@ define carbon::relay(
       require => [
         File[$service_file],
         File["${prefix}/conf/storage-schemas.conf"],
+        Anchor['whisper::end'],
       ],
     }
     $fragment_notify = Service["carbon-relay-${name}"]
