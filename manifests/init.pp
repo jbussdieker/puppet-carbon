@@ -129,7 +129,7 @@ class carbon(
     group => 'root',
     mode  => '0644',
     force => true,
-  } ~> Server <| tag == 'carbon' |>
+  } ~> Service <| tag == 'carbon' |>
 
   concat { "${prefix}/conf/storage-aggregation.conf":
     owner => 'root',
