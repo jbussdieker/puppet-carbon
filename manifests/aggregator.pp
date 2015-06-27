@@ -46,6 +46,7 @@ define carbon::aggregator(
     service { "carbon-aggregator-${name}":
       ensure  => running,
       enable  => true,
+      tag     => 'carbon',
       require => [
         File[$service_file],
         File["${prefix}/conf/storage-schemas.conf"],

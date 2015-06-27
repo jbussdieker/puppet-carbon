@@ -70,6 +70,7 @@ define carbon::cache(
     service { "carbon-cache-${name}":
       ensure  => running,
       enable  => true,
+      tag     => 'carbon',
       require => [
         File[$service_file],
         File["${prefix}/conf/storage-schemas.conf"],

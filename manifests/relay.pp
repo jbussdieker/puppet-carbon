@@ -54,6 +54,7 @@ define carbon::relay(
     service { "carbon-relay-${name}":
       ensure  => running,
       enable  => true,
+      tag     => 'carbon',
       require => [
         File[$service_file],
         File["${prefix}/conf/storage-schemas.conf"],
