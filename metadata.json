@@ -1,6 +1,6 @@
 {
   "name": "jbussdieker-carbon",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "author": "Joshua Bussdieker",
   "summary": "Puppet Carbon management module",
   "license": "MIT",
