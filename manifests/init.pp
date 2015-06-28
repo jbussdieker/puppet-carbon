@@ -29,7 +29,10 @@ class carbon(
   $path = '/usr/local/src/carbon',
   $revision = 'master',
   $user = undef,
-  $caches = {},
+  $caches = {
+    'a' => {
+    },
+  },
   $relays = {},
   $aggregators = {},
   $storage_schemas = {
@@ -82,6 +85,10 @@ class carbon(
     $real_user = $user
   } else {
     $real_user = 'root'
+  }
+
+  if !defined(Class['whisper']) {
+    include whisper
   }
 
   package { 'python-twisted':
