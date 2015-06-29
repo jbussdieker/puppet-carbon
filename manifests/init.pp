@@ -90,10 +90,6 @@ class carbon(
     $real_user = 'root'
   }
 
-  if !defined(Class['whisper']) {
-    include whisper
-  }
-
   package { 'python-twisted':
     ensure => present,
   }

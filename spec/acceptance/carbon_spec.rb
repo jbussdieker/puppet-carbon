@@ -4,6 +4,8 @@ describe 'carbon class' do
   let(:prefix) { "/opt/foo" }
   let(:manifest) {
     <<-EOS
+      class { 'whisper': }
+      ->
       user { 'carbon':
         ensure => present,
       }
