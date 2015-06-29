@@ -187,12 +187,11 @@ class carbon(
   create_resources('carbon::storage_aggregation', $storage_aggregations)
   create_resources('carbon::aggregation_rule', $aggregation_rules)
   create_resources('carbon::relay_rule', $relay_rules)
+  create_resources('carbon::whitelist', $whitelist)
+  create_resources('carbon::blacklist', $blacklist)
 
   create_resources('carbon::cache', $caches)
   create_resources('carbon::relay', $relays)
   create_resources('carbon::aggregator', $aggregators)
-
-  create_resources('carbon::whitelist', $whitelist)
-  create_resources('carbon::blacklist', $blacklist)
 
 }
