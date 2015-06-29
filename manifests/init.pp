@@ -84,6 +84,10 @@ class carbon(
   $blacklist = {},
 ) {
 
+  if defined(Anchor['whisper::end']) {
+    Anchor['whisper::end'] -> Service <| tag == 'carbon' |>
+  }
+
   if $user {
     $real_user = $user
   } else {
