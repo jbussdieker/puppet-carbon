@@ -15,7 +15,7 @@ define carbon::storage_aggregation(
     $prefix = '/opt/graphite'
   }
 
-  concat::fragment { $title:
+  concat::fragment { "carbon_storage_aggregation_${title}":
     target  => "${prefix}/conf/storage-aggregation.conf",
     content => template('carbon/storage-aggregation.erb'),
     order   => $order,

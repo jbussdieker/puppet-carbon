@@ -68,7 +68,7 @@ define carbon::relay(
     $fragment_order = 30
   }
 
-  concat::fragment { "relay_${name}":
+  concat::fragment { "carbon_relay_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/relay.erb'),
     order   => $fragment_order,

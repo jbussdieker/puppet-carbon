@@ -60,7 +60,7 @@ define carbon::aggregator(
     $fragment_order = 50
   }
 
-  concat::fragment { "aggregator_${name}":
+  concat::fragment { "carbon_aggregator_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/aggregator.erb'),
     order   => $fragment_order,

@@ -16,7 +16,7 @@ define carbon::aggregation_rule(
     $prefix = '/opt/graphite'
   }
 
-  concat::fragment { $title:
+  concat::fragment { "carbon_aggregation_rule_${title}":
     target  => "${prefix}/conf/aggregation-rules.conf",
     content => template('carbon/aggregation_rule.erb'),
     order   => $order,

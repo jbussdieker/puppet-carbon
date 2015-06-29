@@ -15,7 +15,7 @@ define carbon::relay_rule(
     $prefix = '/opt/graphite'
   }
 
-  concat::fragment { $title:
+  concat::fragment { "carbon_relay_rule_${title}":
     target  => "${prefix}/conf/relay-rules.conf",
     content => template('carbon/relay_rule.erb'),
     order   => $order,

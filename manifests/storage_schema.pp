@@ -14,7 +14,7 @@ define carbon::storage_schema(
     $prefix = '/opt/graphite'
   }
 
-  concat::fragment { $title:
+  concat::fragment { "carbon_storage_schema_${title}":
     target  => "${prefix}/conf/storage-schemas.conf",
     content => template('carbon/storage-schema.erb'),
     order   => $order,

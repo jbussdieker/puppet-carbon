@@ -84,7 +84,7 @@ define carbon::cache(
     $fragment_order = 10
   }
 
-  concat::fragment { "cache_${name}":
+  concat::fragment { "carbon_cache_${name}":
     target  => "${prefix}/conf/carbon.conf",
     content => template('carbon/cache.erb'),
     order   => $fragment_order,
