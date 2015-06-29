@@ -5,6 +5,7 @@ describe 'carbon::relay_rule' do
   let(:pattern) { 'collectd\.' }
   let(:destinations) { '127.0.0.1:2004:a, 127.0.0.1:2104:b' }
   let(:params) { default_params }
+  let(:concat_title) { "carbon_relay_rule_#{title}" }
   let(:default_params) do
     {
       :destinations => destinations,
@@ -62,7 +63,7 @@ describe 'carbon::relay_rule' do
         let(:title) { param[:value] }
       end
 
-      let(:fragment_content) { param_value(subject.call, 'concat::fragment', title, :content) }
+      let(:fragment_content) { param_value(subject.call, 'concat::fragment', concat_title, :content) }
 
       it param[:title] do
         Array(param[:match]).each do |item|
@@ -74,7 +75,7 @@ describe 'carbon::relay_rule' do
         end
       end
 
-      it { should contain_concat__fragment(title) }
+      it { should contain_concat__fragment(concat_title) }
     end
   end
 end

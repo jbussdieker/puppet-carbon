@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'carbon::aggregator' do
   let(:title) { 'a' }
-  let(:concat_title) { "aggregator_#{title}" }
+  let(:concat_title) { "carbon_aggregator_#{title}" }
 
   describe "carbon.conf template content" do
     [

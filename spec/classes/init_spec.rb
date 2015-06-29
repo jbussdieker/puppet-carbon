@@ -21,7 +21,7 @@ describe 'carbon' do
   #end
 
   it 'sets default schemas' do
-    default_schema = param_value(subject.call, 'concat::fragment', 'default_1min_for_1day', :content)
+    default_schema = param_value(subject.call, 'concat::fragment', 'carbon_storage_schema_default_1min_for_1day', :content)
     default_schema.should match("[default_1min_for_1day]")
   end
 end

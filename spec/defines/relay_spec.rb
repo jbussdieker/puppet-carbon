@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'carbon::relay' do
   let(:title) { 'a' }
-  let(:concat_title) { "relay_#{title}" }
+  let(:concat_title) { "carbon_relay_#{title}" }
 
   describe "carbon.conf template content" do
     [

@@ -6,6 +6,7 @@ describe 'carbon::storage_schema' do
   let(:retentions) { '60:90d' }
   let(:order) { (rand * 100).to_i }
   let(:params) { default_params }
+  let(:concat_title) { "carbon_storage_schema_#{title}" }
   let(:default_params) {
     {
       :pattern    => pattern,
@@ -47,9 +48,9 @@ describe 'carbon::storage_schema' do
         let(:title) { param[:value] }
       end
 
-      let(:fragment_content) { param_value(subject.call, 'concat::fragment', title, :content) }
+      let(:fragment_content) { param_value(subject.call, 'concat::fragment', concat_title, :content) }
 
-      it { should contain_concat__fragment(title) }
+      it { should contain_concat__fragment(concat_title) }
 
       it param[:title] do
         Array(param[:match]).each do |item|
@@ -64,7 +65,7 @@ describe 'carbon::storage_schema' do
   end
 
   context 'target' do
-    let(:target) { param_value(subject.call, 'concat::fragment', title, :target) }
+    let(:target) { param_value(subject.call, 'concat::fragment', concat_title, :target) }
 
     it 'should be /opt/graphite/conf/storage-schemas.conf' do
       target.should eql('/opt/graphite/conf/storage-schemas.conf')

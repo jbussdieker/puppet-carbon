@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'carbon::aggregation_rule' do
   let(:title) { 'default' }
   let(:params) { default_params }
+  let(:concat_title) { "carbon_aggregation_rule_#{title}" }
   let(:default_params) do
     {
       :output_template => '<env>.applications.<app>.all.requests',
@@ -51,9 +52,9 @@ describe 'carbon::aggregation_rule' do
         let(:title) { param[:value] }
       end
 
-      let(:fragment_content) { param_value(subject.call, 'concat::fragment', title, :content) }
+      let(:fragment_content) { param_value(subject.call, 'concat::fragment', concat_title, :content) }
 
-      it { should contain_concat__fragment(title) }
+      it { should contain_concat__fragment(concat_title) }
 
       it param[:title] do
         Array(param[:match]).each do |item|

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'carbon::cache' do
   let(:title) { 'a' }
-  let(:concat_title) { "cache_#{title}" }
+  let(:concat_title) { "carbon_cache_#{title}" }
 
   describe "concat::fragment" do
     [
