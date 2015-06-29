@@ -29,6 +29,7 @@ class carbon(
   $path = '/usr/local/src/carbon',
   $revision = 'master',
   $user = undef,
+  $purge_conf = false,
   $caches = {
     'a' => {
     },
@@ -116,8 +117,15 @@ class carbon(
     require => Exec['install_carbon'],
   }
 
+  if $purge_conf {
+    $purge_conf_real = true
+  } else {
+    $purge_conf_real = undef
+  }
+
   file { "${prefix}/conf":
     ensure => directory,
+    purge  => $purge_conf_real,
   }
 
   file { "${prefix}/storage/whisper":
