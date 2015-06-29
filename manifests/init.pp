@@ -79,6 +79,8 @@ class carbon(
       order              => 4,
     },
   },
+  $whitelist = {},
+  $blacklist = {},
 ) {
 
   if $user {
@@ -181,5 +183,8 @@ class carbon(
   create_resources('carbon::cache', $caches)
   create_resources('carbon::relay', $relays)
   create_resources('carbon::aggregator', $aggregators)
+
+  create_resources('carbon::whitelist', $whitelist)
+  create_resources('carbon::blacklist', $blacklist)
 
 }
