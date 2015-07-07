@@ -58,7 +58,7 @@ class carbon(
     'min' => {
       pattern            => '\.min$',
       x_files_factor     => 0.1,
-      aggregation_method => 'sum',
+      aggregation_method => 'min',
       order              => 1,
     },
     'max' => {
